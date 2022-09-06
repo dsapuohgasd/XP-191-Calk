@@ -12,6 +12,7 @@ namespace _08._02_CalkProject_.App
         public void Run()
         {
             Console.WriteLine("Hello, World!");
+            Console.WriteLine("меня зовут Вадим");
         }
     }
 }
