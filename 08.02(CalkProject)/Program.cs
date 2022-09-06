@@ -1,5 +1,6 @@
 ﻿new _08._02_CalkProject_.App.Calc().Run();
 
+//Dima verni 10 sotki
 //Dima verni 15 sotki
 
 // "Думи мої думи…"
