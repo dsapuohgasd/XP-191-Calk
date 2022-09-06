@@ -8,13 +8,13 @@ namespace TestProject
         [TestMethod]
         public void CalcTest()
         {
-            // Спроба створити об`єкт головного класу
+            // Г‘ГЇГ°Г®ГЎГ  Г±ГІГўГ®Г°ГЁГІГЁ Г®ГЎ`ВєГЄГІ ГЈГ®Г«Г®ГўГ­Г®ГЈГ® ГЄГ«Г Г±Гі
             _08._02_CalkProject_.App.Calc calc = new();
-            // Маємо одержати не-null результат
+            // ГЊГ ВєГ¬Г® Г®Г¤ГҐГ°Г¦Г ГІГЁ Г­ГҐ-null Г°ГҐГ§ГіГ«ГјГІГ ГІ
             Assert.IsNotNull(calc);
         }
 
-        [TestMethod]
+        [TestMethod]//РџР°СЂСЃРёРј СЃРёРјС‹РѕР»С‹ РІ С‡РёСЃР»Р°
         public void RomanNumberParse()
         {
             Assert.AreEqual(RomanNumber.Parse("I"),1,"I==1");
