@@ -54,6 +54,7 @@ namespace _08._02_CalkProject_.App
             }
 
             return res;
+            // res - это результат
         }
     }
 }
