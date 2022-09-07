@@ -25,7 +25,7 @@ namespace TestProject
             Assert.AreEqual(100, RomanNumber.Parse("C"));
             Assert.AreEqual(500, RomanNumber.Parse("D"));
             Assert.AreEqual(1000, RomanNumber.Parse("M"));
-
+            Assert.AreEqual(0, RomanNumber.Parse("N"));
         }
         [TestMethod]
         public void RomanNumberParse2Digit()
