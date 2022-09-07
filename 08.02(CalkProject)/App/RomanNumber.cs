@@ -15,6 +15,14 @@ namespace _08._02_CalkProject_.App
         // одержання числа з рядкового запису
         public static int Parse(String str)
         {
+            if (str == null)
+            {
+                throw new ArgumentException("Null is not allowed");
+            }
+            if (str.Length==0)
+            {
+                throw new ArgumentException("Empty string not allowed");
+            }
             char[] digits = { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
             int[] digitValues = { 1, 5, 10, 50, 100, 500, 1000 };
             //якщо наступна цифра числа більша за поточну, то вона віднімається від результату, інакше додається
@@ -25,6 +33,8 @@ namespace _08._02_CalkProject_.App
             int ind = Array.IndexOf(digits, digit);  // позиція цифри у масиві
             int val = 0;  // величина цифри
             int res = 0;
+
+
 
             // продовжуємо доки pos не дійде до 0
             while (pos != -1)

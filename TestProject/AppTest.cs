@@ -64,6 +64,7 @@ namespace TestProject
 
             var exc3 = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("X X"); }); //зберігаємо виключення, що виникає при тестуванні
             var exp3 = new ArgumentException("Invalid char"); // очікуване виключення з попереднього тесту
+            
             Assert.IsTrue(
                 Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("X X"); }).Message.StartsWith("Invalid char"));
 
@@ -74,9 +75,11 @@ namespace TestProject
         {
             //вимагати щоб не призводило до виключення
             //argexc з повідомленням empty str not allow
-            Assert.AreEqual("Empty string not allowed", Assert.ThrowsException<ArgumentException>(()=>RomanNumber.Parse("")).Message);
 
+            Assert.AreEqual("Empty string not allowed", Assert.ThrowsException<ArgumentException>(()=>RomanNumber.Parse("")).Message);
             Assert.ThrowsException<ArgumentException>(() => RomanNumber.Parse(null!));
+
+        
         }
     }
 }
