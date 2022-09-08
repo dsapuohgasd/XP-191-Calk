@@ -81,6 +81,63 @@ namespace TestProject
 
         
         }
+        
+        [TestMethod]
+        public void RomanNumberСtor()
+        {
+            //тест конструкторов
+            RomanNumber roman = new();
+            roman = new(10);
+            Assert.IsNotNull(roman);
+
+            roman = new(0);
+            Assert.IsNotNull(roman);
+
+        }
+        
+        [TestMethod]
+        public void RomanNumberToString()
+        {
+            RomanNumber roman = new(10);
+            Assert.AreEqual("X", roman.ToString());
+            roman = new(90);
+            Assert.AreEqual("XC", roman.ToString());
+            roman = new(1999);
+            Assert.AreEqual("MCMXCIX", roman.ToString());
+
+        }
+        
+        [TestMethod]
+        public void RomanNumberToStringCrossTest()
+        {
+            //Проверка совместной работы Parse - ToString
+            //Циклом генерируем числа n=0-2022;
+            //Roman(n)->ToString->Parse==n
+            RomanNumber num=new();
+            for(int n=0;n<=2022;++n)
+            {
+                num.Value = n;
+                Assert.AreEqual(n, RomanNumber.Parse(num.ToString()));
+            }
+        }
+
+        [TestMethod]
+        public void RomanNumberTypeTest()
+        {
+            RomanNumber rn1 = new(10);
+            RomanNumber rn2 = rn1;
+            Assert.AreSame(rn1, rn2);// rn1,rn2 - ссылки на один объект
+            RomanNumber rn3 = rn1 with { }; //клонирование
+            Assert.AreSame(rn3, rn1);
+            Assert.AreEqual(rn3, rn1);
+            Assert.IsTrue(rn1 == rn3);
+
+            RomanNumber rn4 = rn1 with { Value = 20 };
+
+            Assert.IsFalse(rn1 == rn4);
+            Assert.AreNotEqual(rn4, rn1);
+            Assert.AreNotSame(rn4, rn1);
+        }
     }
 }
 
