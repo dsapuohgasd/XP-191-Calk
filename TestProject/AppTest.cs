@@ -25,8 +25,18 @@ namespace TestProject
             Assert.AreEqual(100, RomanNumber.Parse("C"));
             Assert.AreEqual(500, RomanNumber.Parse("D"));
             Assert.AreEqual(1000, RomanNumber.Parse("M"));
-            Assert.AreEqual(0, RomanNumber.Parse("N"));
         }
+        public void RomanNumberParseN()//Tests and exceptions for "N"  letter
+        {
+            Assert.AreEqual(0, RomanNumber.Parse("N"));// Vadim added this test. Converting "N" to Zero
+
+            //Exceptions. Only one "N" in string
+            Assert.ThrowsException<ArgumentException>(() => RomanNumber.Parse("XN")); 
+            Assert.ThrowsException<ArgumentException>(() => RomanNumber.Parse("MNX"));
+            Assert.ThrowsException<ArgumentException>(() => RomanNumber.Parse("NL"));
+
+        }
+
         [TestMethod]
         public void RomanNumberParse2Digit()
         {
