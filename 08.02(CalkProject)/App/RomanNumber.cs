@@ -61,7 +61,7 @@ namespace _08._02_CalkProject_.App
         {
             if (str == null)    //null строка
             {
-                throw new ArgumentException("Null is not allowed");
+                throw new ArgumentNullException(nameof(str));
             }
             if (str == "N")     //если 0 то вернем 0
             {
@@ -86,7 +86,7 @@ namespace _08._02_CalkProject_.App
             int pos = str.Length - 1;   // позиція останньої цифри числа
             char digit = str[pos];     // символ цифри
             int ind = Array.IndexOf(digits, digit);     // позиція цифри у масиві
-            int val = 0;    // величина цифри
+            int val;    // величина цифри
             int res = 0;
 
 
@@ -121,109 +121,217 @@ namespace _08._02_CalkProject_.App
             // res - это результат
         }
 
-        //сложение
+        //сложение 
+
+        // Рефакторинг - алгоритм повторяется в каждом методе
+
+        #region
+        //public RomanNumber Add(RomanNumber rn)
+        //{
+        //    if(rn is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(rn));
+        //    }
+        //    return new(this.Value+rn.Value);
+        //    //return this with { Value = this.Value+rn.Value};
+        //}
+        ////cложение + строка
+        //public RomanNumber Add(String val)
+        //{
+        //    if (val is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(val));
+        //    }
+        //    return new(this.Value + Parse(val));
+        //}
+
+        ////сложение статик
+        //public static RomanNumber Add(RomanNumber rn1, RomanNumber rn2)
+        //{
+        //    if(rn1 is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(rn1));
+        //    }
+        //    if(rn2 is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(rn2));
+        //    }
+        //    return new(rn1.Value+rn2.Value);
+        //}
+
+        ////сложение + число
+        //public RomanNumber Add(int val)
+        //{
+        //    return this with { Value=this.Value+val};
+        //}
+
+        ////сложение + число статик
+        //public static RomanNumber Add(int val, RomanNumber rn)
+        //{
+        //    if (rn is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(rn));
+        //    }
+        //    return new (val + rn.Value);
+        //}
+        ////сложение + число статик
+        //public static RomanNumber Add(RomanNumber rn, int val)
+        //{
+        //    if (rn is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(rn));
+        //    }
+        //    return new (rn.Value+val);
+        //}
+        ////сложение + число статик
+        //public static RomanNumber Add(int val, int val1)
+        //{
+        //    return new (val + val1);
+        //}
+        //public static RomanNumber Add(String rn, int val)
+        //{
+        //    if (rn is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(rn));
+        //    }
+        //    return new (Parse(rn)+val);
+        //}
+        //public static RomanNumber Add(int val,String rn)
+        //{
+        //    if (rn is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(rn));
+        //    }
+        //    return new (Parse(rn)+val);
+        //}
+        //public static RomanNumber Add(String val, String val1)
+        //{
+        //    if (val is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(val));
+        //    }
+        //    if (val1 is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(val1));
+        //    }
+        //    return new(Parse(val) + Parse(val1));
+        //}
+        //public static RomanNumber Add(RomanNumber val, String val1)
+        //{
+        //    if (val is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(val));
+        //    }
+        //    if (val1 is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(val));
+        //    }
+        //    return new(val.Value+Parse(val1));
+        //}
+        #endregion
+
+        // Рефакторинг -->
+
         public RomanNumber Add(RomanNumber rn)
         {
-            if(rn is null)
+            if (rn is null)
             {
                 throw new ArgumentNullException(nameof(rn));
             }
-            return new(this.Value+rn.Value);
+            return new(this.Value + rn.Value);
             //return this with { Value = this.Value+rn.Value};
         }
 
-        //cложение + строка
+        //Вместо дублирования алгоритма сложения мы создаем объект из серых данных и делегируем сложение другому методу
+        public RomanNumber Add(int val)
+        {
+            return this.Add(new RomanNumber(val));
+        }
+
+        //Вместо дублирования алгоритма сложения мы создаем объект из серых данных и делегируем сложение другому методу
         public RomanNumber Add(String val)
         {
             if (val is null)
             {
                 throw new ArgumentNullException(nameof(val));
             }
-            return new(this.Value + Parse(val));
-        }
-        
-        //сложение статик
-        public static RomanNumber Add(RomanNumber rn1, RomanNumber rn2)
-        {
-            if(rn1 is null)
-            {
-                throw new ArgumentNullException(nameof(rn1));
-            }
-            if(rn2 is null)
-            {
-                throw new ArgumentNullException(nameof(rn2));
-            }
-            return new(rn1.Value+rn2.Value);
+            return this.Add(new RomanNumber(Parse(val)));
         }
 
-        //сложение + число
-        public RomanNumber Add(int val)
-        {
-            return this with { Value=this.Value+val};
-        }
+        //Статические методы сложения
+        #region
+        //static Add -->
 
-        //сложение + число статик
-        public static RomanNumber Add(int val, RomanNumber rn)
+        //int + int
+        //public static RomanNumber Add(int val1, int val2)
+        //{
+        //    return new RomanNumber(val1).Add(val2);
+        //}
+
+        ////string + int || int + string
+        //public static RomanNumber Add(int val1, String val2)
+        //{
+        //    return new RomanNumber(val1).Add(val2);
+        //}
+        //public static RomanNumber Add(String val1,int val2)
+        //{
+        //    return new RomanNumber(RomanNumber.Parse(val1)).Add(val2);
+        //}
+
+        ////string + string
+        //public static RomanNumber Add(String val1,String val2)
+        //{
+        //    return new RomanNumber(RomanNumber.Parse(val1)).Add(val2);
+        //}
+
+        ////object + int || int + object
+        //public static RomanNumber Add(RomanNumber val1,int val2)
+        //{
+        //    return val1.Add(val2);
+        //}
+        //public static RomanNumber Add(int val1,RomanNumber val2)
+        //{
+        //    return val2.Add(val1);
+        //}
+
+        ////object + object
+        //public static RomanNumber Add(RomanNumber val1,RomanNumber val2)
+        //{
+        //    return val1.Add(val2);
+        //}
+
+        ///// <summary>
+        ///// Calculate sum of RomanNumber val1 and String val2
+        ///// </summary>
+        ///// <param name="val1"></param>
+        ///// <param name="val2"></param>
+        ///// <returns>RomanNumber</returns>
+        ////object + string
+        //public static RomanNumber Add(RomanNumber val1,String val2)
+        //{
+        //    return val1.Add(val2);
+        //}
+
+        //<-- static add
+        #endregion
+
+        //superduper add
+        public static RomanNumber Add(object obj1,object obj2)
         {
-            if (rn is null)
+            var rns = new RomanNumber[] {null!, null!};
+            var pars = new object[] { obj1, obj2 };
+            var res = new RomanNumber(0);
+            for (int i = 0; i < 2; i++) 
             {
-                throw new ArgumentNullException(nameof(rn));
+                if (pars[i] is null) throw new ArgumentNullException($"obj{i+1}");
+
+                if (pars[i] is int val) rns[i] = new RomanNumber(val);
+                else if (pars[i] is String str) rns[i] = new RomanNumber(Parse(str));
+                else if (pars[i] is RomanNumber rn) rns[i] = rn;
+                else throw new ArgumentException($"obj{i+1}: rype unsupported");
+                res = res.Add(rns[i]);
             }
-            return new (val + rn.Value);
-        }
-        //сложение + число статик
-        public static RomanNumber Add(RomanNumber rn, int val)
-        {
-            if (rn is null)
-            {
-                throw new ArgumentNullException(nameof(rn));
-            }
-            return new (rn.Value+val);
-        }
-        //сложение + число статик
-        public static RomanNumber Add(int val, int val1)
-        {
-            return new (val + val1);
-        }
-        public static RomanNumber Add(String rn, int val)
-        {
-            if (rn is null)
-            {
-                throw new ArgumentNullException(nameof(rn));
-            }
-            return new (Parse(rn)+val);
-        }
-        public static RomanNumber Add(int val,String rn)
-        {
-            if (rn is null)
-            {
-                throw new ArgumentNullException(nameof(rn));
-            }
-            return new (Parse(rn)+val);
-        }
-        public static RomanNumber Add(String val, String val1)
-        {
-            if (val is null)
-            {
-                throw new ArgumentNullException(nameof(val));
-            }
-            if (val1 is null)
-            {
-                throw new ArgumentNullException(nameof(val1));
-            }
-            return new(Parse(val) + Parse(val1));
-        }
-        public static RomanNumber Add(RomanNumber val, String val1)
-        {
-            if (val is null)
-            {
-                throw new ArgumentNullException(nameof(val));
-            }
-            if (val1 is null)
-            {
-                throw new ArgumentNullException(nameof(val));
-            }
-            return new(val.Value+Parse(val1));
+            return res;
         }
     }
 }

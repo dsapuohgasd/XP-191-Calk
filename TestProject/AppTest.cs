@@ -87,7 +87,7 @@ namespace TestProject
             //argexc з повідомленням empty str not allow
 
             Assert.AreEqual("Empty string not allowed", Assert.ThrowsException<ArgumentException>(()=>RomanNumber.Parse("")).Message);
-            Assert.ThrowsException<ArgumentException>(() => RomanNumber.Parse(null!));
+            Assert.ThrowsException<ArgumentNullException>(() => RomanNumber.Parse(null!));
 
         
         }
@@ -96,7 +96,7 @@ namespace TestProject
         public void RomanNumberСtor()
         {
             //тест конструкторов
-            RomanNumber roman = new();
+            RomanNumber roman;
             roman = new(10);
             Assert.IsNotNull(roman);
 
