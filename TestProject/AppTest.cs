@@ -105,6 +105,8 @@ namespace TestProject
 
         }
         
+
+        //Проверка переопледеления метода ToString
         [TestMethod]
         public void RomanNumberToString()
         {
