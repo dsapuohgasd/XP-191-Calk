@@ -61,22 +61,22 @@ namespace TestProject
             //Assert.AreEqual(30, RomanNumber.Parse("XXA"));
 
             var exc = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("XXA"); }); //зберігаємо виключення, що виникає при тестуванні
-            var exp = new ArgumentException("Invalid char A"); // очікуване виключення з попереднього тесту
+            var exp = new ArgumentException(Resources.GetInvalidCharMessage('A')); // очікуване виключення з попереднього тесту
             Assert.AreEqual(exp.Message, exc.Message);
 
             var exc1 = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("XXJ"); }); //зберігаємо виключення, що виникає при тестуванні
-            var exp1 = new ArgumentException("Invalid char J"); // очікуване виключення з попереднього тесту
+            var exp1 = new ArgumentException(Resources.GetInvalidCharMessage('J')); // очікуване виключення з попереднього тесту
             Assert.AreEqual(exp.Message, exc.Message);
 
             var exc2 = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("XXK"); }); //зберігаємо виключення, що виникає при тестуванні
-            var exp2 = new ArgumentException("Invalid char K"); // очікуване виключення з попереднього тесту
+            var exp2 = new ArgumentException(Resources.GetInvalidCharMessage('K')); // очікуване виключення з попереднього тесту
             Assert.AreEqual(exp.Message, exc.Message);
 
             var exc3 = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("X X"); }); //зберігаємо виключення, що виникає при тестуванні
-            var exp3 = new ArgumentException("Invalid char"); // очікуване виключення з попереднього тесту
+            var exp3 = new ArgumentException(Resources.GetInvalidCharMessage(' ')); // очікуване виключення з попереднього тесту
             
             Assert.IsTrue(
-                Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("X X"); }).Message.StartsWith("Invalid char"));
+                Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("X X"); }).Message.StartsWith(Resources.GetInvalidCharMessage(' ')));
 
         }
 
@@ -86,10 +86,8 @@ namespace TestProject
             //вимагати щоб не призводило до виключення
             //argexc з повідомленням empty str not allow
 
-            Assert.AreEqual("Empty string not allowed", Assert.ThrowsException<ArgumentException>(()=>RomanNumber.Parse("")).Message);
+            Assert.AreEqual(Resources.GetEmptyStringMessage(), Assert.ThrowsException<ArgumentException>(()=>RomanNumber.Parse("")).Message);
             Assert.ThrowsException<ArgumentNullException>(() => RomanNumber.Parse(null!));
-
-        
         }
         
         [TestMethod]
@@ -102,7 +100,6 @@ namespace TestProject
 
             roman = new(0);
             Assert.IsNotNull(roman);
-
         }
         
 

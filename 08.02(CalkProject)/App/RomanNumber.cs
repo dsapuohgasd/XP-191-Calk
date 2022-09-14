@@ -10,9 +10,10 @@ using System.Windows.Markup;
 
 namespace _08._02_CalkProject_.App
 {
-    //робота з римськими числами
+    // робота з римськими числами
     public record RomanNumber
     {
+        const char ZERO_DIGIT = 'N';
         private int num;
         public int Value
         {
@@ -34,7 +35,7 @@ namespace _08._02_CalkProject_.App
             num = n;
         }
 
-        //переопределение стандартного tostring
+        // переопределение стандартного tostring
         public override string ToString()
         {
             if (this.num == 0)
@@ -47,6 +48,7 @@ namespace _08._02_CalkProject_.App
             int[] values = { 1000,900,500,400,100, 90,50,40,10,9,5,4,1};
             for (int j = 0; j <= parts.Length - 1; j++)
             {
+                
                 while (n >= values[j])
                 {
                     n -= values[j];
@@ -59,29 +61,29 @@ namespace _08._02_CalkProject_.App
         // одержання числа з рядкового запису
         public static int Parse(String str)
         {
-            if (str == null)    //null строка
+            if (str == null)    // null строка
             {
                 throw new ArgumentNullException(nameof(str));
             }
-            if (str == "N")     //если 0 то вернем 0
+            if (str == ZERO_DIGIT.ToString())     // если 0 то вернем 0
             {
                 return 0;
             }
             bool isNegative = false;
-            if (str.StartsWith('-'))    //начало с -
+            if (str.StartsWith('-'))    // начало с -
             {
                 isNegative = true;
                 str = str[1..];
             }
-            if (str.Length<1)//пустая строка
+            if (str.Length<1)  // пустая строка
             {
-                throw new ArgumentException("Empty string not allowed");
+                throw new ArgumentException(Resources.GetEmptyStringMessage());  // Избавление от хардкода
             }
 
             char[] digits = {'I', 'V', 'X', 'L', 'C', 'D', 'M' };
             int[] digitValues = { 1, 5, 10, 50, 100, 500, 1000 };
-            //якщо наступна цифра числа більша за поточну, то вона віднімається від результату, інакше додається
-            //IX: -1+10; XC: -10+100; XX: +10+10; CX: +100+10;
+            // якщо наступна цифра числа більша за поточну, то вона віднімається від результату, інакше додається
+            // IX: -1+10; XC: -10+100; XX: +10+10; CX: +100+10;
             // XIV: +10-1+5
             int pos = str.Length - 1;   // позиція останньої цифри числа
             char digit = str[pos];     // символ цифри
@@ -97,7 +99,7 @@ namespace _08._02_CalkProject_.App
                 ind = Array.IndexOf(digits, digit);     // позиція цифри у масиві
                 if (ind == -1)
                 {
-                    throw new ArgumentException($"Invalid char {digit}");
+                    throw new ArgumentException(Resources.GetInvalidCharMessage(digit)); // Избавление от хардкода
                 }
                 // Визначаємо величину цифри
                 val = digitValues[ind];     // величина цифри 
@@ -121,7 +123,7 @@ namespace _08._02_CalkProject_.App
             // res - это результат
         }
 
-        //сложение 
+        // сложение 
 
         // Рефакторинг - алгоритм повторяется в каждом методе
 
@@ -236,29 +238,25 @@ namespace _08._02_CalkProject_.App
         {
             if (rn is null)
             {
-                throw new ArgumentNullException(nameof(rn));
+                throw new ArgumentNullException(Resources.GetEmptyStringMessage());
             }
-            return new(this.Value + rn.Value);
-            //return this with { Value = this.Value+rn.Value};
+            return new(this.Value + rn.Value);  // Возврат результата сложения
+            // return this with { Value = this.Value+rn.Value};
         }
 
-        //Вместо дублирования алгоритма сложения мы создаем объект из серых данных и делегируем сложение другому методу
+        // Вместо дублирования алгоритма сложения мы создаем объект из серых данных и делегируем сложение другому методу
         public RomanNumber Add(int val)
         {
-            return this.Add(new RomanNumber(val));
+            return this.Add(new RomanNumber(val));  // Возврат результата сложения
         }
 
-        //Вместо дублирования алгоритма сложения мы создаем объект из серых данных и делегируем сложение другому методу
+        // Вместо дублирования алгоритма сложения мы создаем объект из серых данных и делегируем сложение другому методу
         public RomanNumber Add(String val)
         {
-            if (val is null)
-            {
-                throw new ArgumentNullException(nameof(val));
-            }
-            return this.Add(new RomanNumber(Parse(val)));
+            return this.Add(new RomanNumber(Parse(val)));  // Возврат результата сложения
         }
 
-        //Статические методы сложения
+        // Статические методы сложения
         #region
         //static Add -->
 
@@ -315,23 +313,23 @@ namespace _08._02_CalkProject_.App
         //<-- static add
         #endregion
 
-        //superduper add
+        // superduper add
         public static RomanNumber Add(object obj1,object obj2)
         {
-            var rns = new RomanNumber[] {null!, null!};
-            var pars = new object[] { obj1, obj2 };
-            var res = new RomanNumber(0);
+            var rns = new RomanNumber[] {null!, null!};                                  // Массив объектов RomanNumber
+            var pars = new object[] { obj1, obj2 };                                      // Массив объектов
+            var res = new RomanNumber(0);                                                // Возвращаемый объект
             for (int i = 0; i < 2; i++) 
             {
-                if (pars[i] is null) throw new ArgumentNullException($"obj{i+1}");
+                if (pars[i] is null) throw new ArgumentNullException($"obj{i+1}");       // Проверка object на null значения
 
-                if (pars[i] is int val) rns[i] = new RomanNumber(val);
-                else if (pars[i] is String str) rns[i] = new RomanNumber(Parse(str));
-                else if (pars[i] is RomanNumber rn) rns[i] = rn;
-                else throw new ArgumentException($"obj{i+1}: rype unsupported");
-                res = res.Add(rns[i]);
-            }
-            return res;
+                if (pars[i] is int val) rns[i] = new RomanNumber(val);                   // Если object это int
+                else if (pars[i] is String str) rns[i] = new RomanNumber(Parse(str));    // Если object это String
+                else if (pars[i] is RomanNumber rn) rns[i] = rn;                         // Если object это RomanNumber
+                else throw new ArgumentException(Resources.GetInvalidTypeMessage(i + 1, pars[i].GetType().Name));  // Если object это неизвестный нам тип
+                res = res.Add(rns[i]);                                                   // Сложение
+            }                                                                            
+            return res;                                                                  // Возврат результата сложения
         }
     }
 }
