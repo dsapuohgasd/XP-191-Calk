@@ -60,20 +60,20 @@ namespace TestProject
         {
             //Assert.AreEqual(30, RomanNumber.Parse("XXA"));
 
-            var exc = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("XXA"); }); //зберігаємо виключення, що виникає при тестуванні
-            var exp = new ArgumentException(Resources.GetInvalidCharMessage('A')); // очікуване виключення з попереднього тесту
+            var exc = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("XXA"); });   //зберігаємо виключення, що виникає при тестуванні
+            var exp = new ArgumentException(Resources.GetInvalidCharMessage('A'));                      // очікуване виключення з попереднього тесту
             Assert.AreEqual(exp.Message, exc.Message);
 
-            var exc1 = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("XXJ"); }); //зберігаємо виключення, що виникає при тестуванні
-            var exp1 = new ArgumentException(Resources.GetInvalidCharMessage('J')); // очікуване виключення з попереднього тесту
+            var exc1 = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("XXJ"); });  //зберігаємо виключення, що виникає при тестуванні
+            var exp1 = new ArgumentException(Resources.GetInvalidCharMessage('J'));                     // очікуване виключення з попереднього тесту
             Assert.AreEqual(exp.Message, exc.Message);
 
-            var exc2 = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("XXK"); }); //зберігаємо виключення, що виникає при тестуванні
-            var exp2 = new ArgumentException(Resources.GetInvalidCharMessage('K')); // очікуване виключення з попереднього тесту
+            var exc2 = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("XXK"); });  //зберігаємо виключення, що виникає при тестуванні
+            var exp2 = new ArgumentException(Resources.GetInvalidCharMessage('K'));                     // очікуване виключення з попереднього тесту
             Assert.AreEqual(exp.Message, exc.Message);
 
-            var exc3 = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("X X"); }); //зберігаємо виключення, що виникає при тестуванні
-            var exp3 = new ArgumentException(Resources.GetInvalidCharMessage(' ')); // очікуване виключення з попереднього тесту
+            var exc3 = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("X X"); });  //зберігаємо виключення, що виникає при тестуванні
+            var exp3 = new ArgumentException(Resources.GetInvalidCharMessage(' '));                     // очікуване виключення з попереднього тесту
             
             Assert.IsTrue(
                 Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("X X"); }).Message.StartsWith(Resources.GetInvalidCharMessage(' ')));
@@ -101,7 +101,6 @@ namespace TestProject
             roman = new(0);
             Assert.IsNotNull(roman);
         }
-        
 
         //Проверка переопледеления метода ToString
         [TestMethod]
@@ -135,8 +134,8 @@ namespace TestProject
         {
             RomanNumber rn1 = new(10);
             RomanNumber rn2 = rn1;
-            Assert.AreSame(rn1, rn2);// rn1,rn2 - ссылки на один объект
-            RomanNumber rn3 = rn1 with { }; //клонирование
+            Assert.AreSame(rn1, rn2);        // rn1,rn2 - ссылки на один объект
+            RomanNumber rn3 = rn1 with { };  //клонирование
             
             Assert.AreEqual(rn3, rn1);
             Assert.IsTrue(rn1 == rn3);
@@ -160,11 +159,11 @@ namespace TestProject
             rn.Value = -90;
             Assert.AreEqual("-XC", rn.ToString());
 
-            Assert.ThrowsException<ArgumentException> (() => RomanNumber.Parse("M-CM"));//1000-900
-            Assert.ThrowsException<ArgumentException> (() => RomanNumber.Parse("M-"));//1000-
-            Assert.ThrowsException<ArgumentException> (() => RomanNumber.Parse("-"));//пустую строку
-            Assert.ThrowsException<ArgumentException> (() => RomanNumber.Parse("-N"));//-0
-            Assert.ThrowsException<ArgumentException> (() => RomanNumber.Parse("--X"));//--10
+            Assert.ThrowsException<ArgumentException> (() => RomanNumber.Parse("M-CM"));   //1000-900
+            Assert.ThrowsException<ArgumentException> (() => RomanNumber.Parse("M-"));     //1000-
+            Assert.ThrowsException<ArgumentException> (() => RomanNumber.Parse("-"));      //пустую строку
+            Assert.ThrowsException<ArgumentException> (() => RomanNumber.Parse("-N"));     //-0
+            Assert.ThrowsException<ArgumentException> (() => RomanNumber.Parse("--X"));    //--10
         }
     }
 
@@ -257,7 +256,46 @@ namespace TestProject
             Assert.ThrowsException<ArgumentException>(() => RomanNumber.Add("GGG", "X"));
             Assert.ThrowsException<ArgumentException>(() => RomanNumber.Add("-", "X"));
         }
+    }
 
+    [TestClass]
+    public class ResourcesTest
+    {
+        [TestMethod]
+        public void EnterNumTest()  // Ввод значения
+        {
+            Assert.AreEqual("Enter number: ", Resources.GetEnterNumberMessage("en-US"));            // Проверка соответствия кодировки 
+            Assert.AreEqual("Введiть число: ", Resources.GetEnterNumberMessage());                  // Проверка значения по умолчанию
+            Assert.AreEqual("Введiть число: ", Resources.GetEnterNumberMessage("uk-UA"));           // Проверка соответствия кодировки 
+
+            Assert.ThrowsException<Exception>(() => Resources.GetEnterNumberMessage(""));           //Проверка на пустую строку кодировки
+            Assert.ThrowsException<Exception>(() => Resources.GetEnterNumberMessage("Stas"));       //Проверка на неправильную строку кодировки
+        }
+
+
+        [TestMethod]
+        public void EnterOperationTest()  // Ввод операции
+        {
+            Assert.AreEqual("Enter operation: ", Resources.GetEnterOperationMessage("en-US"));      // Проверка соответствия кодировки 
+            Assert.AreEqual("Введiть операцiю: ", Resources.GetEnterOperationMessage());            // Проверка значения по умолчанию
+            Assert.AreEqual("Введiть операцiю: ", Resources.GetEnterOperationMessage("uk-UA"));     // Проверка соответствия кодировки 
+
+            Assert.ThrowsException<Exception>(() => Resources.GetEnterOperationMessage(""));        //Проверка на пустую строку кодировки
+            Assert.ThrowsException<Exception>(() => Resources.GetEnterOperationMessage("Denis"));   //Проверка на неправильную строку кодировки
+        }
+
+        [TestMethod]
+        public void GetResultTest()  // Вывод результата
+        {
+            Assert.AreEqual("Result: 12", Resources.GetResultMessage(12,"en-US"));                  // Проверка соответствия кодировки 
+            Assert.AreEqual("Результат: 12,2", Resources.GetResultMessage(12.2));                   // Проверка значения по умолчанию
+            Assert.AreEqual("Результат: 1234124", Resources.GetResultMessage(1234124,"uk-UA"));     // Проверка соответствия кодировки 
+            Assert.AreEqual("Результат: 20", Resources.GetResultMessage(RomanNumber.Parse("XX")));  // Проверка соответствия кодировки 
+            Assert.AreEqual("Result: XX", Resources.GetResultMessage("XX", "en-US"));               // Проверка соответствия кодировки 
+
+            Assert.ThrowsException<Exception>(() => Resources.GetResultMessage(1, ""));             //Проверка на пустую строку
+            Assert.ThrowsException<Exception>(() => Resources.GetResultMessage(1, "Oleg"));         //Проверка на неправильную строку
+        }
     }
 }
 

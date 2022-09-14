@@ -10,17 +10,21 @@ namespace _08._02_CalkProject_.App
     public static class Resources
     {
         public static String Culture { get; set; } = "uk-UA";
-        public static String GetEmptyStringMessage(String? culture = null)   // Пустая строка
+        
+        // Пустая строка
+        public static String GetEmptyStringMessage(String? culture = null) 
         {
-            if (culture == null) culture = Culture;                     // Если переданный параметр null то локализакция устанавливается по умолчанию
-            switch (culture)
+            if (culture == null) culture = Culture;                 // Если переданный параметр null то локализакция устанавливается по умолчанию
+            return culture switch
             {
-                case "uk-UA": return "Пуста строка не підтримується";   // Возврат строки сообщения
-                case "en-US": return "Empty string not allowed";        // Возврат строки сообщения
-            }
-            throw new Exception("Unsupported culture");                 // Возврат ошибки с неподдерживаемой культурой
+                "uk-UA" => "Пуста строка не підтримується",         // Возврат строки сообщения в uk-UA кодировке
+                "en-US" => "Empty string not allowed",              // Возврат строки сообщения в en-US кодировке
+                _ => throw new Exception("Unsupported culture"),    // Возврат ошибки с неподдерживаемой культурой
+            };
         }
-        public static String GetInvalidCharMessage(char c, String? culture =null)  // Неподдерживаемый символ
+        
+        // Неподдерживаемый символ
+        public static String GetInvalidCharMessage(char c, String? culture =null)  
         {
             culture ??=  Culture;                                // Если переданный параметр null то локализакция устанавливается по умолчаниюы
             return culture switch
@@ -30,7 +34,9 @@ namespace _08._02_CalkProject_.App
                 _ => throw new Exception("Unsupported culture")  // Возврат ошибки с неподдерживаемой культурой
             };
         }
-        public static String GetInvalidTypeMessage(int objNumber, String type, String? culture = null)  // Неподдерживаемый тип
+        
+        // Неподдерживаемый тип
+        public static String GetInvalidTypeMessage(int objNumber, String type, String? culture = null)  
         {
             if (culture == null) culture = Culture;                         // Если переданный параметр null то локализакция устанавливается по умолчанию
             return culture switch
@@ -40,7 +46,9 @@ namespace _08._02_CalkProject_.App
                 _ => throw new Exception("Unsupported culture")             // Возврат ошибки с неподдерживаемой культурой
             };
         }
-        public static String GetMisplacedNMessage(String? culture = null)  // 'N=0' 
+        
+        // 'N=0' 
+        public static String GetMisplacedNMessage(String? culture = null)  
         {
             if (culture == null) culture = Culture;                 // Если переданный параметр null то локализакция устанавливается по умолчанию
             return culture switch
@@ -51,5 +59,44 @@ namespace _08._02_CalkProject_.App
             };
         }
 
+        ///////////////////////////////////////////////////////////////////////////////
+        //UI->
+        ///////////////////////////////////////////////////////////////////////////////
+        
+        // Ввод числа
+        public static String GetEnterNumberMessage(String? culture = null)  
+        {
+            if (culture == null) culture = Culture;               // Если переданный параметр null то локализакция устанавливается по умолчанию
+            return culture switch                                 
+            {                                                     
+                "uk-UA" => "Введiть число: ",                     // Возврат строки сообщения в "uk-UA" кодировке
+                "en-US" => "Enter number: ",                      // Возврат строки сообщения в "en-US" кодировке
+                _ => throw new Exception("Unsupported culture"),  // Возврат ошибки с неподдерживаемой культурой
+            };
+        } 
+        
+        // Выбор операции
+        public static String GetEnterOperationMessage(String? culture = null)  
+        {
+            if (culture == null) culture = Culture;               // Если переданный параметр null то локализакция устанавливается по умолчанию
+            return culture switch                                 
+            {                                                     
+                "uk-UA" => "Введiть операцiю: ",                  // Возврат строки сообщения в "uk-UA" кодировке
+                "en-US" => "Enter operation: ",                   // Возврат строки сообщения в "en-US" кодировке
+                _ => throw new Exception("Unsupported culture"),  // Возврат ошибки с неподдерживаемой культурой
+            };
+        }
+        
+        // Результат
+        public static String GetResultMessage(object res, String? culture = null)  
+        {
+            if (culture == null) culture = Culture;               // Если переданный параметр null то локализакция устанавливается по умолчанию
+            return culture switch                                 
+            {                                                     
+                "uk-UA" => $"Результат: {res}",                   // Возврат строки сообщения в "uk-UA" кодировке
+                "en-US" => $"Result: {res}",                      // Возврат строки сообщения в "en-US" кодировке
+                _ => throw new Exception("Unsupported culture"),  // Возврат ошибки с неподдерживаемой культурой
+            };
+        }
     }
 }
