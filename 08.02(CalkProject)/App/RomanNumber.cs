@@ -13,6 +13,7 @@ namespace _08._02_CalkProject_.App
     // робота з римськими числами
     public record RomanNumber
     {
+        public static Resources Resources { get; set; } = null!;
         const char ZERO_DIGIT = 'N';
         private int num;
         public int Value
@@ -26,14 +27,12 @@ namespace _08._02_CalkProject_.App
                 return num;
             }
         }
-        public RomanNumber()
-        {
-            num = 0;
-        }
-        public RomanNumber(int n)
+
+        public RomanNumber(int n = 0)
         {
             num = n;
         }
+
 
         // переопределение стандартного tostring
         public override string ToString()

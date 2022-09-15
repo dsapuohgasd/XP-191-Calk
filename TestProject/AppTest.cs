@@ -1,15 +1,23 @@
 using _08._02_CalkProject_.App;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
+using System.Resources;
+using Resources = _08._02_CalkProject_.App.Resources;
 
 namespace TestProject
 {
     [TestClass]
     public class AppTest
     {
+        private Resources Resources { get; set; } = new();
+        public AppTest()
+        {
+            RomanNumber.Resources = Resources;
+        }
         [TestMethod]
         public void CalcTest()
         {
             // Ñïðîáà ñòâîðèòè îá`ºêò ãîëîâíîãî êëàñó
-            _08._02_CalkProject_.App.Calc calc = new();
+            _08._02_CalkProject_.App.Calc calc = new(Resources);
             // Ìàºìî îäåðæàòè íå-null ðåçóëüòàò
             Assert.IsNotNull(calc);
         }
@@ -59,6 +67,7 @@ namespace TestProject
         public void RomanNumberParseInvalidDigits()
         {
             //Assert.AreEqual(30, RomanNumber.Parse("XXA"));
+          
 
             var exc = Assert.ThrowsException<ArgumentException>(() => { RomanNumber.Parse("XXA"); });   //зберігаємо виключення, що виникає при тестуванні
             var exp = new ArgumentException(Resources.GetInvalidCharMessage('A'));                      // очікуване виключення з попереднього тесту
@@ -83,10 +92,11 @@ namespace TestProject
         [TestMethod]
         public void RomanNumberParseEmpty()
         {
+            Resources resources = new();
             //вимагати щоб не призводило до виключення
             //argexc з повідомленням empty str not allow
 
-            Assert.AreEqual(Resources.GetEmptyStringMessage(), Assert.ThrowsException<ArgumentException>(()=>RomanNumber.Parse("")).Message);
+            Assert.AreEqual(resources.GetEmptyStringMessage(), Assert.ThrowsException<ArgumentException>(()=>RomanNumber.Parse("")).Message);
             Assert.ThrowsException<ArgumentNullException>(() => RomanNumber.Parse(null!));
         }
         
@@ -170,6 +180,7 @@ namespace TestProject
     [TestClass]
     public class OperationTest
     {
+
         [TestMethod]
         public void AddRNTest()
         {
@@ -261,6 +272,11 @@ namespace TestProject
     [TestClass]
     public class ResourcesTest
     {
+        private Resources Resources { get; set; } = new();
+        public ResourcesTest()
+        {
+            RomanNumber.Resources = Resources;
+        }
         [TestMethod]
         public void EnterNumTest()  // Ввод значения
         {
@@ -287,6 +303,7 @@ namespace TestProject
         [TestMethod]
         public void GetResultTest()  // Вывод результата
         {
+            
             Assert.AreEqual("Result: 12", Resources.GetResultMessage(12,"en-US"));                  // Проверка соответствия кодировки 
             Assert.AreEqual("Результат: 12,2", Resources.GetResultMessage(12.2));                   // Проверка значения по умолчанию
             Assert.AreEqual("Результат: 1234124", Resources.GetResultMessage(1234124,"uk-UA"));     // Проверка соответствия кодировки 
