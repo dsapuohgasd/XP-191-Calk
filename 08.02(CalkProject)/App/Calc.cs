@@ -10,43 +10,73 @@ namespace _08._02_CalkProject_.App
     // Головний клас - запуск програми
     public class Calc
     {
-        private readonly Resources Resources; // Dependency
+        private readonly Resources Resources; // Пакет ресурсов
 
         public Calc(Resources resources)
         {
             Resources = resources;
         }
+        public RomanNumber EvalExpression(String expression)
+        {
+            var Operations = new String[] { "+", "-" };          // Массив операций
+
+            String[] parts = expression.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length != 3) throw new ArgumentException(Resources.GetInvalidLength());                             // Проверка на длину вводимой строки
+            if (Array.IndexOf(Operations, parts[1]) == -1) throw new ArgumentException(Resources.GetInvalidOperation());  // Проверка на ввод доступной операции
+
+            RomanNumber rn1 = new(RomanNumber.Parse(parts[0]));  // Получение первого элемента
+            RomanNumber rn2 = new(RomanNumber.Parse(parts[2]));  // Получение второго элемента
+            RomanNumber res =                                    // Вычисление результата
+                parts[1] == Operations[0]
+                ? rn1.Add(rn2)
+                : rn1.Sub(rn2);
+            return res;                                          // Возврат результата
+        }
 
         public void Run()
         {
-            RomanNumber? numA, numB, res;
-            char symbol;
-            while (true)
+            int choise = -1;  
+            String lang = null;
+            do
             {
+                Console.Write("Select language: \n1. Українська\n2. English\n> ");     // Выбор локализации
                 try
                 {
-                    Console.Write(Resources.GetEnterNumberMessage());
-                    numA = new RomanNumber(RomanNumber.Parse(Console.ReadLine()!));
-                    Console.Write(Resources.GetEnterOperationMessage());
-                    symbol = char.Parse(Console.ReadLine()!);
-                    Console.Write(Resources.GetEnterNumberMessage());
-                    numB = new RomanNumber(RomanNumber.Parse(Console.ReadLine()!));
-
-                    switch (symbol)
+                    choise = int.Parse(Console.ReadLine()!);
+                    if (choise == 1)
                     {
-                        case '+':
-                            res = RomanNumber.Add(numA, numB); 
-                            break;
-                        default: throw new Exception();
+                        lang = "uk-UA";
                     }
-
-                    Console.WriteLine(Resources.GetResultMessage(numA, symbol, numB, res));
+                    if (choise == 2)
+                    {
+                        lang = "en-US";
+                    }
                 }
-                catch(Exception ex)
+                catch
+                {
+                    throw new ArgumentException(Resources.GetInvalidSymbolMessage());  // Недопустимый символ
+
+                }
+            } while (lang==null);
+            String? userInput;
+            RomanNumber res = null!;
+            do
+            {
+                Console.Clear();
+                Console.Write(Resources.GetEnterNumberMessage(lang));  // Строка ввода выражения
+
+                userInput = Console.ReadLine() ?? "";
+                try
+                {
+                    res = EvalExpression(userInput);
+                }
+                catch (ArgumentException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
-            }
+            } while (res is null);
+            Console.WriteLine($"{userInput} = {res}");  // Вывод результата
         }
     }
 }

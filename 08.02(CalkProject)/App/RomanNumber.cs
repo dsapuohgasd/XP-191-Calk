@@ -33,6 +33,16 @@ namespace _08._02_CalkProject_.App
             num = n;
         }
 
+        private RomanNumber(object obj)
+        {
+            if (obj is null) throw new ArgumentNullException(nameof(obj));  // Проверка object на null значения
+
+            if (obj is int val) Value = val;                                        // Если object это int
+            else if (obj is String str) Value = Parse(str);                         // Если object это String
+            else if (obj is RomanNumber rn) Value = rn.Value;                       // Если object это RomanNumber
+            else throw new ArgumentException(
+            Resources.GetInvalidTypeMessage(obj.GetType().Name));                    // Если object это неизвестный нам тип
+        }
 
         // переопределение стандартного tostring
         public override string ToString()
@@ -84,10 +94,10 @@ namespace _08._02_CalkProject_.App
             // якщо наступна цифра числа більша за поточну, то вона віднімається від результату, інакше додається
             // IX: -1+10; XC: -10+100; XX: +10+10; CX: +100+10;
             // XIV: +10-1+5
-            int pos = str.Length - 1;   // позиція останньої цифри числа
-            char digit = str[pos];     // символ цифри
-            int ind = Array.IndexOf(digits, digit);     // позиція цифри у масиві
-            int val;    // величина цифри
+            int pos = str.Length - 1;                 // позиція останньої цифри числа
+            char digit = str[pos];                    // символ цифри
+            int ind = Array.IndexOf(digits, digit);   // позиція цифри у масиві
+            int val;                                  // величина цифри
             int res = 0;
 
 
@@ -115,16 +125,43 @@ namespace _08._02_CalkProject_.App
                 {
                     res += val;
                 }
-                pos -= 1; //передостання цифра
+                pos -= 1;  //передостання цифра
             }
 
             return isNegative ? -res : res;
             // res - это результат
         }
+        
+        #region Add
+        public RomanNumber Add(RomanNumber rn)
+        {
+            if (rn is null)
+            {
+                throw new ArgumentNullException(Resources.GetEmptyStringMessage());
+            }
+            return new(this.Value + rn.Value);  // Возврат результата сложения
+            // return this with { Value = this.Value+rn.Value};
+        }
 
-        // сложение 
+        // Вместо дублирования алгоритма сложения мы создаем объект из серых данных и делегируем сложение другому методу
+        public RomanNumber Add(int val)
+        {
+            return this.Add(new RomanNumber(val));  // Возврат результата сложения
+        }
 
-        // Рефакторинг - алгоритм повторяется в каждом методе
+        // Вместо дублирования алгоритма сложения мы создаем объект из серых данных и делегируем сложение другому методу
+        public RomanNumber Add(String val)
+        {
+            return this.Add(new RomanNumber(Parse(val)));  // Возврат результата сложения
+        }
+        
+        public static RomanNumber Add(object obj1, object obj2)
+        {
+            var rn1 = (obj1 is RomanNumber r1) ? r1 : new RomanNumber(obj1);
+            var rn2 = (obj2 is RomanNumber r2) ? r2 : new RomanNumber(obj2);
+            return rn1.Add(rn2);                             // Возврат результата сложения
+            //return this.Add(new RomanNumber(Parse(val)));  // Возврат результата сложения
+        }
 
         #region
         //public RomanNumber Add(RomanNumber rn)
@@ -231,32 +268,10 @@ namespace _08._02_CalkProject_.App
         //}
         #endregion
 
-        // Рефакторинг -->
-
-        public RomanNumber Add(RomanNumber rn)
-        {
-            if (rn is null)
-            {
-                throw new ArgumentNullException(Resources.GetEmptyStringMessage());
-            }
-            return new(this.Value + rn.Value);  // Возврат результата сложения
-            // return this with { Value = this.Value+rn.Value};
-        }
-
-        // Вместо дублирования алгоритма сложения мы создаем объект из серых данных и делегируем сложение другому методу
-        public RomanNumber Add(int val)
-        {
-            return this.Add(new RomanNumber(val));  // Возврат результата сложения
-        }
-
-        // Вместо дублирования алгоритма сложения мы создаем объект из серых данных и делегируем сложение другому методу
-        public RomanNumber Add(String val)
-        {
-            return this.Add(new RomanNumber(Parse(val)));  // Возврат результата сложения
-        }
 
         // Статические методы сложения
         #region
+
         //static Add -->
 
         //int + int
@@ -308,27 +323,48 @@ namespace _08._02_CalkProject_.App
         //{
         //    return val1.Add(val2);
         //}
+        // superduper add
+        //public static RomanNumber Add(object obj1,object obj2)
+        //{
+        //    var rns = new RomanNumber[] {null!, null!};                                  // Массив объектов RomanNumber
+        //    var pars = new object[] { obj1, obj2 };                                      // Массив объектов
+        //    var res = new RomanNumber(0);                                                // Возвращаемый объект
+        //    for (int i = 0; i < 2; i++) 
+        //    {
+        //        if (pars[i] is null) throw new ArgumentNullException($"obj{i+1}");       // Проверка object на null значения
 
+        //        if (pars[i] is int val) rns[i] = new RomanNumber(val);                   // Если object это int
+        //        else if (pars[i] is String str) rns[i] = new RomanNumber(Parse(str));    // Если object это String
+        //        else if (pars[i] is RomanNumber rn) rns[i] = rn;                         // Если object это RomanNumber
+        //        else throw new ArgumentException(
+        //            Resources.GetInvalidTypeMessage(i + 1, pars[i].GetType().Name));     // Если object это неизвестный нам тип
+        //        res = res.Add(rns[i]);                                                   // Сложение
+        //    }                                                                            
+        //    return res;                                                                  // Возврат результата сложения
+        //}
         //<-- static add
         #endregion
 
-        // superduper add
-        public static RomanNumber Add(object obj1,object obj2)
-        {
-            var rns = new RomanNumber[] {null!, null!};                                  // Массив объектов RomanNumber
-            var pars = new object[] { obj1, obj2 };                                      // Массив объектов
-            var res = new RomanNumber(0);                                                // Возвращаемый объект
-            for (int i = 0; i < 2; i++) 
-            {
-                if (pars[i] is null) throw new ArgumentNullException($"obj{i+1}");       // Проверка object на null значения
 
-                if (pars[i] is int val) rns[i] = new RomanNumber(val);                   // Если object это int
-                else if (pars[i] is String str) rns[i] = new RomanNumber(Parse(str));    // Если object это String
-                else if (pars[i] is RomanNumber rn) rns[i] = rn;                         // Если object это RomanNumber
-                else throw new ArgumentException(Resources.GetInvalidTypeMessage(i + 1, pars[i].GetType().Name));  // Если object это неизвестный нам тип
-                res = res.Add(rns[i]);                                                   // Сложение
-            }                                                                            
-            return res;                                                                  // Возврат результата сложения
+        #endregion
+
+        #region Min
+
+        public RomanNumber Sub(object rn)
+        {
+            if (rn == null) throw new ArgumentNullException(nameof(rn));  // Проверка на null значение
+            return new RomanNumber(Value - new RomanNumber(rn).Value);    // Возврат результата вычитания
         }
+
+        public static RomanNumber Sub(object obj1, object obj2)
+        {
+            var rn1 = (obj1 is RomanNumber r1) ? r1 : new RomanNumber(obj1);
+            var rn2 = (obj2 is RomanNumber r2) ? r2 : new RomanNumber(obj2);
+            return rn1.Sub(rn2);  // Возврат результата сложения
+        }
+
+
+        #endregion
+
     }
 }

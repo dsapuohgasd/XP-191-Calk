@@ -36,14 +36,38 @@ namespace _08._02_CalkProject_.App
         }
         
         // Неподдерживаемый тип
-        public   String GetInvalidTypeMessage(int objNumber, String type, String? culture = null)  
+        public   String GetInvalidTypeMessage(String type, String? culture = null)  
         {
-            if (culture == null) culture = Culture;                         // Если переданный параметр null то локализакция устанавливается по умолчанию
+            if (culture == null) culture = Culture;                 // Если переданный параметр null то локализакция устанавливается по умолчанию
             return culture switch
             {
-                "uk-UA"=> $"об:{objNumber}: тип: '{type}' недозволенний",   // Возврат строки сообщения в uk-UA кодировке
-                "en-Us" => $"obj:{objNumber}: type: '{type}' unsupported",  // Возврат строки сообщения в en-US кодировке
-                _ => throw new Exception("Unsupported culture")             // Возврат ошибки с неподдерживаемой культурой
+                "uk-UA"=> $"тип: '{type}' недозволенний",           // Возврат строки сообщения в uk-UA кодировке
+                "en-Us" => $"type: '{type}' unsupported",           // Возврат строки сообщения в en-US кодировке
+                _ => throw new Exception("Unsupported culture")     // Возврат ошибки с неподдерживаемой культурой
+            };
+        }
+        
+        // Неподдерживаемая операция
+        public   String GetInvalidOperation(String? culture = null)  
+        {
+            if (culture == null) culture = Culture;                 // Если переданный параметр null то локализакция устанавливается по умолчанию
+            return culture switch
+            {
+                "uk-UA"=> $"операция недозволеннa",         // Возврат строки сообщения в uk-UA кодировке
+                "en-Us" => $"operation unsupported",         // Возврат строки сообщения в en-US кодировке
+                _ => throw new Exception("Unsupported culture")     // Возврат ошибки с неподдерживаемой культурой
+            };
+        }
+        
+        // Неподдерживаемая операция
+        public   String GetInvalidLength(String? culture = null)  
+        {
+            if (culture == null) culture = Culture;                 // Если переданный параметр null то локализакция устанавливается по умолчанию
+            return culture switch
+            {
+                "uk-UA"=> $"Недозволенний розмiр строки",           // Возврат строки сообщения в uk-UA кодировке
+                "en-Us" => $"Length unsupported",                   // Возврат строки сообщения в en-US кодировке
+                _ => throw new Exception("Unsupported culture")     // Возврат ошибки с неподдерживаемой культурой
             };
         }
         
@@ -59,22 +83,32 @@ namespace _08._02_CalkProject_.App
             };
         }
 
+        // Неподдерживаемый символ
+        public String GetInvalidSymbolMessage(String? culture = null)
+        {
+            culture ??= Culture;                                // Если переданный параметр null то локализакция устанавливается по умолчаниюы
+            return culture switch
+            {
+                "uk-UA" => $"Недозволенний символ",              // Возврат строки сообщения в uk-UA кодировке
+                "en-Us" => $"Invalid symbol",                      // Возврат строки сообщения в en-US кодировке
+                _ => throw new Exception("Unsupported culture")  // Возврат ошибки с неподдерживаемой культурой
+            };
+        }
         ///////////////////////////////////////////////////////////////////////////////
         //UI->
         ///////////////////////////////////////////////////////////////////////////////
-        
+
         // Ввод числа
         public   String GetEnterNumberMessage(String? culture = null)  
         {
             if (culture == null) culture = Culture;               // Если переданный параметр null то локализакция устанавливается по умолчанию
             return culture switch                                 
             {                                                     
-                "uk-UA" => "Введiть число: ",                     // Возврат строки сообщения в "uk-UA" кодировке
-                "en-US" => "Enter number: ",                      // Возврат строки сообщения в "en-US" кодировке
+                "uk-UA" => "Введiть вираз (CX + CD): ",                     // Возврат строки сообщения в "uk-UA" кодировке
+                "en-US" => "Enter expression (CX + CD): ",                      // Возврат строки сообщения в "en-US" кодировке
                 _ => throw new Exception("Unsupported culture"),  // Возврат ошибки с неподдерживаемой культурой
             };
         } 
-        
         // Выбор операции
         public   String GetEnterOperationMessage(String? culture = null)  
         {
