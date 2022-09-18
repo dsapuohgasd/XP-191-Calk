@@ -321,9 +321,9 @@ namespace TestProject
         [TestMethod]
         public void EnterNumTest()  // Ввод значения
         {
-            Assert.AreEqual("Enter number: ", Resources.GetEnterNumberMessage("en-US"));            // Проверка соответствия кодировки 
-            Assert.AreEqual("Введiть число: ", Resources.GetEnterNumberMessage());                  // Проверка значения по умолчанию
-            Assert.AreEqual("Введiть число: ", Resources.GetEnterNumberMessage("uk-UA"));           // Проверка соответствия кодировки 
+            Assert.AreEqual("Enter expression (CX + CD): ", Resources.GetEnterNumberMessage("en-US"));            // Проверка соответствия кодировки 
+            Assert.AreEqual("Введiть вираз (CX + CD): ", Resources.GetEnterNumberMessage());                  // Проверка значения по умолчанию
+            Assert.AreEqual("Введiть вираз (CX + CD): ", Resources.GetEnterNumberMessage("uk-UA"));           // Проверка соответствия кодировки 
 
             Assert.ThrowsException<Exception>(() => Resources.GetEnterNumberMessage(""));           //Проверка на пустую строку кодировки
             Assert.ThrowsException<Exception>(() => Resources.GetEnterNumberMessage("Stas"));       //Проверка на неправильную строку кодировки
@@ -344,15 +344,12 @@ namespace TestProject
         [TestMethod]
         public void GetResultTest()  // Вывод результата
         {
-            
-            /*Assert.AreEqual("Result: 12", Resources.GetResultMessage(12,"en-US"));                 */ // Проверка соответствия кодировки 
-            /*Assert.AreEqual("Результат: 12,2", Resources.GetResultMessage(12.2));                  */ // Проверка значения по умолчанию
-            /*Assert.AreEqual("Результат: 1234124", Resources.GetResultMessage(1234124,"uk-UA"));    */ // Проверка соответствия кодировки 
-            /*Assert.AreEqual("Результат: 20", Resources.GetResultMessage(RomanNumber.Parse("XX"))); */ // Проверка соответствия кодировки 
-            /*Assert.AreEqual("Result: XX", Resources.GetResultMessage("XX", "en-US"));              */ // Проверка соответствия кодировки 
+            RomanNumber res = new(800);
+            Assert.AreEqual("\nРезультат: CD + CD = DCCC", Resources.GetResultMessage("CD + CD", res, "uk-UA"));               // Проверка соответствия кодировки 
+            Assert.AreEqual("\nResult: CD + CD = DCCC", Resources.GetResultMessage("CD + CD", res, "en-US"));                  // Проверка соответствия кодировки 
 
-            /*Assert.ThrowsException<Exception>(() => Resources.GetResultMessage(1, ""));            */ //Проверка на пустую строку
-            /*Assert.ThrowsException<Exception>(() => Resources.GetResultMessage(1, "Oleg"));        */ //Проверка на неправильную строку
+            Assert.ThrowsException<Exception>(() => Resources.GetResultMessage("CD + CD", res, ""));               //Проверка на пустую строку
+            Assert.ThrowsException<Exception>(() => Resources.GetResultMessage("CD + CD", res,"Oleg"));            //Проверка на неправильную строку
         }
     }
 }

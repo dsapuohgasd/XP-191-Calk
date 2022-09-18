@@ -76,7 +76,7 @@ namespace _08._02_CalkProject_.App
                     Console.WriteLine(ex.Message);
                 }
             } while (res is null);
-            Console.WriteLine($"{userInput} = {res}");  // Вывод результата
+            Console.WriteLine(Resources.GetResultMessage(userInput,res,lang));  // Вывод результата
         }
     }
 }

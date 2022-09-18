@@ -122,13 +122,13 @@ namespace _08._02_CalkProject_.App
         }
         
         // Результат
-        public   String GetResultMessage(object a,char symbol,object b, object res, String? culture = null)  
+        public   String GetResultMessage(String userInput, RomanNumber res, String? culture = null)  
         {
             if (culture == null) culture = Culture;               // Если переданный параметр null то локализакция устанавливается по умолчанию
             return culture switch                                 
             {                                                     
-                "uk-UA" => $"\nРезультат: {a} {symbol} {b} = {res}",                   // Возврат строки сообщения в "uk-UA" кодировке
-                "en-US" => $"\nResult: {a} {symbol} {b} = {res}",                      // Возврат строки сообщения в "en-US" кодировке
+                "uk-UA" => $"\nРезультат: {userInput} = {res}",                   // Возврат строки сообщения в "uk-UA" кодировке
+                "en-US" => $"\nResult: {userInput} = {res}",                      // Возврат строки сообщения в "en-US" кодировке
                 _ => throw new Exception("Unsupported culture"),  // Возврат ошибки с неподдерживаемой культурой
             };
         }
